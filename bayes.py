@@ -24,7 +24,7 @@ class Search():
         self.img=cv.imread(MAP_FILE, cv.IMREAD_COLOR)
         #error handle: if file NULL
         if self.img is None:
-            print('Couuld not load map map file {}'.format(MAP_FILE),file=sys.stderr)
+            print('Could not load map map file {}'.format(MAP_FILE),file=sys.stderr)
             sys.exit(1)
         '''Location when found'''
         
@@ -55,4 +55,26 @@ class Search():
 
     def draw_map(self,last_known):
         '''Display basemap with: scale | last known (x,y) location | search areas'''
-        cv.line(self.img(20,370))
+        cv.line(self.img(20,370),(70,370), (0, 0, 0), 2)
+        cv.putText(self.img, '0', (8,370), cv.FONT_HERSHEY_PLAIN, 1, (0,0,0))
+        cv.putText(self.img,'50 Nautical Miles',(71,370), cv.FONT_HERSHEY_PLAIN, 1, (0,0,0))
+        #First Search box + search box text
+        cv.rectangle(self.img, (SA1_CORNERS[1], SA1_CORNERS[2],SA1_CORNERS[0],SA1_CORNERS[3]),(0,0,0),1)
+        cv.putText(self.img, '1',(SA1_CORNERS[0]+3,SA1_CORNERS[1]+15),cv.FONT_HERSHEY_PLAIN,1,0)
+        #Second Search box + search box text
+        cv.rectangle(self.img, (SA2_CORNERS[1], SA2_CORNERS[2],SA2_CORNERS[0],SA2_CORNERS[3]),(0,0,0),1)
+        cv.putText(self.img, '1',(SA2_CORNERS[0]+3,SA2_CORNERS[1]+15),cv.FONT_HERSHEY_PLAIN,1,0)
+        #Third Search box + search box text
+        cv.rectangle(self.img, (SA3_CORNERS[1], SA3_CORNERS[2],SA3_CORNERS[0],SA3_CORNERS[3]),(0,0,0),1)
+        cv.putText(self.img, '1',(SA3_CORNERS[0]+3,SA3_CORNERS[1]+15),cv.FONT_HERSHEY_PLAIN,1,0)
+
+        #Displaying last known position cross (CV has BGR color Format)
+        cv.putText(self.img, '+', (last_known),cv.FONT_HERSHEY_PLAIN,1,(0,0,255))
+        
+        #Displaying Symbol Legend
+        cv.putText(self.img, '+ : Last Known Position', (274,355),cv.FONT_HERSHEY_PLAIN,1,(0,0,255))
+        cv.putText(self.img, '* : Actual Postion', (275, 370),cv.FONT_HERSHEY_PLAIN,1,(255,0,0))
+
+        cv.imshow('Search Area', self.img)
+        cv.moveWindow('Search Area', 750, 10)
+        cv.waitKey(500)
